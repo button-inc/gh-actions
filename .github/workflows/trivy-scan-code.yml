@@ -1,7 +1,15 @@
 # Tests that rely on the committed code, without needing the docker images to be built
 name: Scan ClimateTrax FE
 
-on: [push]
+on:
+  workflow_call:
+    inputs:
+      configs: 
+        required: false
+        type: string
+    secrets:
+      your-secrets: 
+        required: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
