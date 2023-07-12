@@ -3,7 +3,7 @@ name: Trivy Scan Code
 on:
   workflow_call:
     inputs:
-      configs: 
+      configs-placeholder: 
         required: false
         type: string
     secrets:
