@@ -1,0 +1,32 @@
+name: Sonarcloud Scan Code
+
+on:
+  workflow_call:
+    inputs:
+      sonar-project-config:
+        required: true
+        type: string
+    secrets:
+      github-token:
+        required: true
+      sonar-token:
+        required: true
+
+concurrency:
+  group: callee-sonarcloud-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sonarcloud: 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up SonarCloud project configuration
+        run: echo "${{ inputs.sonar-project-config }}" > sonar-project.properties
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.github-token }}
+          SONAR_TOKEN: ${{ secrets.sonar-token }}

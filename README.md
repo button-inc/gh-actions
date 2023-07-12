@@ -5,7 +5,9 @@ reusable gh actions can be shared within button-inc
 Code Scanning:
 - Trivy
 - Husky
-- Gitleaks (need to have gitleaks.toml in the root dir for custom rules)
+- Gitleaks (needs "gitleaks.toml" in the root dir for custom rules)
+- SonarCloud (needs "sonar-project.properties" in the root dir)
+
 
 Testing
 - Playwright
