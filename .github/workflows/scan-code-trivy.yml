@@ -1,5 +1,5 @@
 # caller example:
-#  jobs:
+#jobs:
 #    call-workflow-trivy-scan:
 #    uses: button-inc/button-shared-gh-actions/.github/workflows/scan-code-trivy.yml@develop
 
