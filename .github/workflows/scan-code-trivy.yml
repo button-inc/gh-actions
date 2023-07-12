@@ -11,7 +11,7 @@ on:
         required: false
 
 concurrency:
-  group: callee-${{ github.workflow }}-${{ github.ref }}
+  group: callee-trivy-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
