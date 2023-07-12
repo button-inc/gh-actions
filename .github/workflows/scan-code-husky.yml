@@ -1,3 +1,11 @@
+# caller example
+# jobs:   
+#  call-workflow-husky-scan:
+#    uses: button-inc/button-shared-gh-actions/.github/workflows/scan-code-husky.yml@develop
+#    with:
+#      working-directory: ./app
+#      node-version: '18' 
+
 name: Husky Scan Code
 
 on:

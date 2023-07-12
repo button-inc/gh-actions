@@ -1,3 +1,13 @@
+# caller example
+#jobs:
+#  call-workflow-gitleaks-scan:
+#    uses: button-inc/button-shared-gh-actions/.github/workflows/scan-code-gitleaks.yml@develop
+#    with:
+#      notify-user-list: "@shon-button,@YaokunLin"
+#    secrets:
+#      github-token: ${{ secrets.GITHUB_TOKEN }}
+#      gitleaks-license: ${{ secrets.GITLEAKS_LICENSE}}
+
 name: Gitleaks Scan Code
 
 on:
