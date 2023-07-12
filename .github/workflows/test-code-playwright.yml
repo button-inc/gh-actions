@@ -1,0 +1,58 @@
+name: Playwright Test Code
+
+on:
+  workflow_call:
+    inputs:
+      configs: 
+        required: false
+        type: string
+    secrets:
+      envSecrets: 
+        required: false
+
+concurrency:
+  group: callee-playwright-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+    test:
+      timeout-minutes: 60
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v3
+  
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+  
+      - name: Install pnpm
+        run: npm install -g pnpm
+  
+      - name: Cache dependencies
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'pnpm'
+  
+      - name: Install dependencies
+        run: pnpm install
+  
+      - name: Install Playwright Browsers
+        run: pnpm exec playwright install --with-deps
+  
+      - name: Build and start server
+        run: |
+          pnpm run build
+          pnpm run start & # This starts the server in the background
+          sleep 5 # This allows the server some time to start up
+  
+      - name: Run Playwright tests
+        run: pnpm exec playwright test
+  
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
