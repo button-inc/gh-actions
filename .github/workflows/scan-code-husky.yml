@@ -3,8 +3,8 @@ name: Trivy Scan Code
 on:
   workflow_call:
     inputs:
-      configs: 
-        required: false
+      working-directory: 
+        required: true
         type: string
     secrets:
       envSecrets: 
@@ -34,7 +34,7 @@ jobs:
             restore-keys: |
               ${{ runner.os }}-yarn-
         - run: yarn install --frozen-lockfile --check-files
-          working-directory: ./app
+          working-directory: ${{ inputs.working-directory }}
 
     husky-checks:
       needs: install-dev-tools
@@ -55,6 +55,6 @@ jobs:
             restore-keys: |
               ${{ runner.os }}-yarn-
         - run: yarn install 
-          working-directory: ./app
+          working-directory: ${{ inputs.working-directory }}
         - run: npm run lint
-          working-directory: ./app
+          working-directory: ${{ inputs.working-directory }}
