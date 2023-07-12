@@ -13,4 +13,4 @@ Code Scanning:
 Testing
 - Playwright
 
-examples of how to use the reusable actions can be found here: https://github.com/button-inc/climatetrax-frontend/tree/develop/.github/workflows
+example caller: https://github.com/button-inc/climatetrax-frontend/tree/develop/.github/workflows
