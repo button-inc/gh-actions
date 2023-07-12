@@ -13,7 +13,7 @@ on:
         required: true
 
 concurrency:
-  group: callee-husky-${{ github.workflow }}-${{ github.ref }}
+  group: callee-gitleaks-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
