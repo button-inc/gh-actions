@@ -1,5 +1,4 @@
-# Tests that rely on the committed code, without needing the docker images to be built
-name: Scan ClimateTrax FE
+name: Trivy Scan Code
 
 on:
   workflow_call:
