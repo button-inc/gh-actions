@@ -7,7 +7,7 @@ on:
         required: false
         type: string
     secrets:
-      your-secrets: 
+      envSecrets: 
         required: false
 
 concurrency:
