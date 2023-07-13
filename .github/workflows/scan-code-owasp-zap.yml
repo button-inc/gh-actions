@@ -1,0 +1,61 @@
+name: OWASP ZAP Scan
+
+on:
+  workflow_call:
+    inputs:
+      target-url:
+        required: false
+        default: 'http://localhost:3000'
+        type: string
+    secrets:
+      envSecrets:
+        required: false
+
+concurrency:
+  group: callee-owasp-zap-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  owasp-zap-scan:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+
+    - name: Install pnpm
+      run: npm install -g pnpm
+
+    - name: Cache dependencies
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+        cache: 'pnpm'
+
+    - name: Install dependencies
+      run: pnpm install
+
+    - name: Build and start server
+      run: |
+        pnpm run build
+        pnpm run start & # This starts the server in the background
+        sleep 5 # This allows the server some time to start up
+
+    - name: Run OWASP ZAP Full Scan
+      uses: zaproxy/action-full-scan@v0.5.1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        target: ${{ inputs.target-url }}
+
+    - uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: zap-scan-report
+        path: zap-report.html
+        retention-days: 30
+
+  
