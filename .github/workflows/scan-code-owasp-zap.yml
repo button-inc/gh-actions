@@ -7,9 +7,6 @@ on:
         required: false
         default: 'http://localhost:3000'
         type: string
-    secrets:
-      envSecrets:
-        required: false
 
 concurrency:
   group: callee-owasp-zap-${{ github.workflow }}-${{ github.ref }}
@@ -51,11 +48,5 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         target: ${{ inputs.target-url }}
 
-    - uses: actions/upload-artifact@v3
-      if: always()
-      with:
-        name: zap-scan-report
-        path: zap-report.html
-        retention-days: 30
 
   
