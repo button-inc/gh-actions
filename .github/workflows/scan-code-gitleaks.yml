@@ -5,8 +5,8 @@
 #    with:
 #      notify-user-list: "@shon-button,@YaokunLin"
 #    secrets:
-#      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#      GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE}}
+#      github-token: ${{ secrets.GITHUB_TOKEN }}
+#      gitleaks-license: ${{ secrets.GITLEAKS_LICENSE}}
 
 name: Gitleaks Scan Code
 
@@ -17,9 +17,9 @@ on:
         required: false
         type: string
     secrets:
-      GITHUB_TOKEN: 
+      github-token: 
         required: true
-      GITLEAKS_LICENSE: 
+      gitleaks-license: 
         required: true
 
 concurrency:
@@ -35,6 +35,6 @@ jobs:
           fetch-depth: 0
       - uses: gitleaks/gitleaks-action@v2
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.github-token  }}
           GITLEAKS_LICENSE: ${{ secrets.gitleaks-license }}
           GITLEAKS_NOTIFY_USER_LIST: ${{ inputs.notify-user-list }}

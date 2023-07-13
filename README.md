@@ -89,8 +89,8 @@ jobs:
   sonarcloud-scan:
     uses: button-inc/button-shared-gh-actions/.github/workflows/scan-code-sonarcloud.yml@develop
     secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN}}
+      github-token: ${{ secrets.GITHUB_TOKEN }}
+      sonar-token: ${{ secrets.SONAR_TOKEN}}
 ```
 
 [Back to top](#github-actions-templates)

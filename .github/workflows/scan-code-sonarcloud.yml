@@ -3,8 +3,8 @@
 #  call-workflow-sonarcloud-scan:
 #    uses: button-inc/button-shared-gh-actions/.github/workflows/scan-code-sonarcloud.yml@develop
 #    secrets:
-#      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN}}
+#      github-token: ${{ secrets.GITHUB_TOKEN }}
+#      sonar-token: ${{ secrets.SONAR_TOKEN}}
 
 name: Sonarcloud Scan Code
 
@@ -15,9 +15,9 @@ on:
         required: false
         type: string
     secrets:
-      GITHUB_TOKEN:
+      github-token:
         required: true
-      SONAR_TOKEN:
+      sonar-token:
         required: true
 
 concurrency:
@@ -34,5 +34,5 @@ jobs:
       - name: SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.github-token }}
+          SONAR_TOKEN: ${{ secrets.sonar-token }}
