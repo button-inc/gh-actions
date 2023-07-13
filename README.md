@@ -8,6 +8,7 @@ This project contains all Github Actions templates. To make use of the repositor
   - [SonarCloud Scan](#sonar-repo-scan)
   - [Husky Scan](#husky-scan)
   - [Gitleaks Scan](#gitleaks-scan)
+  - [OWASP ZAP Scan](#owasp-zap-scan)
   - [Playwright Tests](#playwright-tests)
 - [Secrets Management](#secrets-management)
 - [Workflow Triggers](#workflow-triggers)
@@ -112,6 +113,20 @@ jobs:
 
 [Back to top](#github-actions-templates)
 
+### OWASP ZAP Scan
+```yaml
+name: zap-scan
+on:
+  workflow_dispatch:
+  push:
+jobs:   
+  zap-scan:
+    uses: button-inc/button-shared-gh-actions/.github/workflows/scan-code-owasp-zap.yml@develop
+    with:
+      target-url: 'http://localhost:3000'
+```
+
+[Back to top](#github-actions-templates)
 ### Playwright Tests
 
 ```yaml
