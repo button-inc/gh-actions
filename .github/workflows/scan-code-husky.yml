@@ -17,9 +17,6 @@ on:
       node-version: 
         required: true
         type: string
-    secrets:
-      envSecrets: 
-        required: false
 
 concurrency:
   group: callee-husky-${{ github.workflow }}-${{ github.ref }}

@@ -1,19 +1,7 @@
-# caller example
-#jobs:
-#  call-workflow-sonarcloud-scan:
-#    uses: button-inc/button-shared-gh-actions/.github/workflows/scan-code-sonarcloud.yml@develop
-#    secrets:
-#      github-token: ${{ secrets.GITHUB_TOKEN }}
-#      sonar-token: ${{ secrets.SONAR_TOKEN}}
-
 name: Sonarcloud Scan Code
 
 on:
   workflow_call:
-    inputs:
-      configs-placeholder: 
-        required: false
-        type: string
     secrets:
       github-token:
         required: true

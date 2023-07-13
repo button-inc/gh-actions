@@ -1,8 +1,3 @@
-# caller example
-#jobs:
-#  call-workflow-playwright-test:
-#    uses: button-inc/button-shared-gh-actions/.github/workflows/test-code-playwright.yml@develop
-
 name: Playwright Test Code
 
 on:

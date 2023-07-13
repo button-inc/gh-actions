@@ -2,13 +2,6 @@ name: Trivy Scan Code
 
 on:
   workflow_call:
-    inputs:
-      configs-placeholder: 
-        required: false
-        type: string
-    secrets:
-      envSecrets: 
-        required: false
 
 concurrency:
   group: callee-trivy-${{ github.workflow }}-${{ github.ref }}

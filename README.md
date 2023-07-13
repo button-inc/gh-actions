@@ -24,8 +24,8 @@ This project contains all Github Actions templates. To make use of the repositor
   - [Build Push Docker](#docker-build-push)
   - [Trivy Scan](#trivy-scan)
   - [SonarCloud Scan](#sonar-repo-scan)
-  - [Sonar Maven Scan](#sonar-maven-scan)
-  - [Putting it all Together](#putting-it-all-together)
+  - [Husky Scan](#husky-scan)
+  - [Playwright Tests](#playwright-tests)
 - [Secrets Management](#secrets-management)
 - [Workflow Triggers](#workflow-triggers)
 - [Testing Framework](#testing-framework)
@@ -95,127 +95,36 @@ jobs:
 
 [Back to top](#github-actions-templates)
 
-### Sonar Maven Scan
+### Husky Scan
 
 ```yaml
-name: sonar-maven-scan
+name: husky-scan
 on:
   workflow_dispatch:
   push:
-jobs:
-  sonar-scan-mvn:
-    uses: bcgov/pipeline-templates/.github/workflows/sonar-scanner-mvn.yaml@main
+jobs:   
+  husky-scan:
+    uses: button-inc/button-shared-gh-actions/.github/workflows/scan-code-husky.yml@develop
     with:
-      WORKDIR: ./tekton/demo/maven-test
-      PROJECT_KEY: pipeline-templates
-    secrets:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      working-directory: ./app
+      node-version: '18' 
 ```
 
 [Back to top](#github-actions-templates)
 
-### Putting it all Together
-
-You add several jobs to a single caller workflow and integrate security related components with build and deploy components. Refer to the example below on how to do this.
+### Playwright Tests
 
 ```yaml
-name: helm-build-deploy-cicd
+name: playwright-tests
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
+  push:
 jobs:
-  codeql-scan:
-    uses: bcgov/pipeline-templates/.github/workflows/codeql.yaml@main
-  build-push:
-    uses: bcgov/pipeline-templates/.github/workflows/build-push.yaml@main
-    with:
-      IMAGE_REGISTRY: docker.io
-      IMAGE: gregnrobinson/bcgov-nginx-demo
-      WORKDIR: ./demo/nginx
-    secrets:
-      IMAGE_REGISTRY_USER: ${{ secrets.IMAGE_REGISTRY_USER }}
-      IMAGE_REGISTRY_PASSWORD: ${{ secrets.IMAGE_REGISTRY_PASSWORD }}
-  trivy-image-scan:
-    needs: build-push
-    uses: bcgov/pipeline-templates/.github/workflows/trivy-container.yaml@main
-    with:
-      IMAGE: gregnrobinson/bcgov-nginx-demo
-      TAG: latest
-  sonar-repo-scan:
-    uses: bcgov/pipeline-templates/.github/workflows/sonar-scanner.yaml@main
-    with:
-      ORG: ci-testing
-      PROJECT_KEY: bcgov-pipeline-templates
-      URL: https://sonarcloud.io
-    secrets:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  sonar-maven-scan:
-    uses: bcgov/pipeline-templates/.github/workflows/sonar-scanner-mvn.yaml@main
-    with:
-      WORKDIR: ./tekton/demo/maven-test
-      PROJECT_KEY: pipeline-templates
-    secrets:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  helm-deploy:
-    needs: [build-push, trivy-image-scan]
-    uses: bcgov/pipeline-templates/.github/workflows/helm-deploy.yaml@main
-    with:
-      ## DOCKER BUILD PARAMS
-      NAME: flask-web
-
-      ## HELM VARIABLES
-      HELM_DIR: ./demo/flask-web/helm
-      VALUES_FILE: ./demo/flask-web/helm/values.yaml
-
-      OPENSHIFT_NAMESPACE: "default"
-      APP_PORT: "80"
-
-      # Used to access Redhat Openshift on an internal IP address from a Github Runner.
-      TAILSCALE: true
-    secrets:
-      IMAGE_REGISTRY_USER: ${{ secrets.IMAGE_REGISTRY_USER }}
-      IMAGE_REGISTRY_PASSWORD: ${{ secrets.IMAGE_REGISTRY_PASSWORD }}
-      OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
-      OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
-      TAILSCALE_API_KEY: ${{ secrets.TAILSCALE_API_KEY }}
-  owasp-scan:
-    uses: bcgov/pipeline-templates/.github/workflows/owasp-scan.yaml@main
-    needs: helm-deploy
-    with:
-      ZAP_SCAN_TYPE: 'base' # Accepted values are base and full.
-      ZAP_TARGET_URL: http://www.itsecgames.com
-      ZAP_DURATION: '2'
-      ZAP_MAX_DURATION: '5'
-      ZAP_GCP_PUBLISH: true
-      ZAP_GCP_PROJECT: phronesis-310405  # Only required if ZAP_GCP_PUBLISH is TRUE
-      ZAP_GCP_BUCKET: 'zap-scan-results' # Only required if ZAP_GCP_PUBLISH is TRUE
-    secrets:
-      GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }} # Only required if ZAP_GCP_PUBLISH is TRUE
-  slack-workflow-status:
-    if: always()
-    name: Post Workflow Status To Slack
-    needs:
-      - codeql-scan
-      - build-push
-      - trivy-image-scan
-      - sonar-repo-scan
-      - sonar-maven-scan
-      - owasp-scan
-      - helm-deploy
-    runs-on: ubuntu-latest
-    steps:
-      - name: Slack Workflow Notification
-        uses: Gamesight/slack-workflow-status@master
-        with:
-          # Required Input
-          repo_token: ${{secrets.GITHUB_TOKEN}}
-          slack_webhook_url: ${{secrets.SLACK_WEBHOOK_URL}}
-          name: 'Github Workflows'
-          icon_emoji: ':fire:'
-          icon_url: 'https://img.icons8.com/material-outlined/96/000000/github.png'
+  playwright-tests:
+    uses: button-inc/button-shared-gh-actions/.github/workflows/test-code-playwright.yml@develop
 ```
+
+[Back to top](#github-actions-templates)
 
 ## Workflow Triggers
 
