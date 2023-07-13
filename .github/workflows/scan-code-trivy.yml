@@ -1,8 +1,3 @@
-# caller example:
-#jobs:
-#    call-workflow-trivy-scan:
-#    uses: button-inc/button-shared-gh-actions/.github/workflows/scan-code-trivy.yml@develop
-
 name: Trivy Scan Code
 
 on:

@@ -21,12 +21,9 @@ example caller: https://github.com/button-inc/climatetrax-frontend/tree/develop/
 This project contains all Github Actions templates. To make use of the repository, fork this repository and modify the `env` and `trigger` sections of each template to meet the needs of your application or repository.
 
 - [Workflow Templates](#workflow-templates)
-  - [Docker Build Push](#docker-build-push)
-  - [Helm Deploy](#helm-deploy)
-  - [Owasp Scan](#owasp-scan)
+  - [Build Push Docker](#docker-build-push)
   - [Trivy Scan](#trivy-scan)
-  - [CodeQL Scan](#codeql-scan)
-  - [Sonar Repo Scan](#sonar-repo-scan)
+  - [SonarCloud Scan](#sonar-repo-scan)
   - [Sonar Maven Scan](#sonar-maven-scan)
   - [Putting it all Together](#putting-it-all-together)
 - [Secrets Management](#secrets-management)
@@ -49,13 +46,13 @@ When a workflow is called, it is imported into the callers context, and executes
 ### Docker Build Push
 
 ```yaml
-name: docker-build-push
+name: build-push-docker
 on:
   workflow_dispatch:
   push:
 jobs:
   build-push:
-    uses: bcgov/pipeline-templates/.github/workflows/build-push.yaml@main
+    uses: button-inc/button-shared-gh-actions/.github/workflows/build-push-docker.yml@develop
     with:
       IMAGE_REGISTRY: docker.io
       IMAGE: gregnrobinson/bcgov-nginx-demo
@@ -63,63 +60,6 @@ jobs:
     secrets:
       IMAGE_REGISTRY_USER: ${{ secrets.IMAGE_REGISTRY_USER }}
       IMAGE_REGISTRY_PASSWORD: ${{ secrets.IMAGE_REGISTRY_PASSWORD }}
-```
-
-[Back to top](#github-actions-templates)
-
-### Helm Deploy
-
-```yaml
-name: helm-deploy
-on:
-  workflow_dispatch:
-  push:
-jobs:
-  helm-deploy:
-    uses: bcgov/pipeline-templates/.github/workflows/helm-deploy.yaml@main
-    with:
-      ## HELM RELEASE NAME
-      NAME: flask-web
-
-      ## HELM VARIABLES
-      HELM_DIR: ./demo/flask-web/helm
-      VALUES_FILE: ./demo/flask-web/helm/values.yaml
-
-      OPENSHIFT_NAMESPACE: "default"
-      APP_PORT: "80"
-
-      # Used to access Redhat Openshift on an internal IP address from a Github Runner.
-      TAILSCALE: true
-    secrets:
-      IMAGE_REGISTRY_USER: ${{ secrets.IMAGE_REGISTRY_USER }}
-      IMAGE_REGISTRY_PASSWORD: ${{ secrets.IMAGE_REGISTRY_PASSWORD }}
-      OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
-      OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
-      TAILSCALE_API_KEY: ${{ secrets.TAILSCALE_API_KEY }}
-```
-
-[Back to top](#github-actions-templates)
-
-### Owasp Scan
-
-```yaml
-name: owasp-scan
-on:
-  workflow_dispatch:
-  push:
-jobs:
-  zap-owasp:
-    uses: bcgov/pipeline-templates/.github/workflows/owasp-scan.yaml@main
-    with:
-      ZAP_SCAN_TYPE: 'base' # Accepted values are base and full.
-      ZAP_TARGET_URL: http://www.itsecgames.com
-      ZAP_DURATION: '2'
-      ZAP_MAX_DURATION: '5'
-      ZAP_GCP_PUBLISH: true
-      ZAP_GCP_PROJECT: phronesis-310405  # Only required if ZAP_GCP_PUBLISH is TRUE
-      ZAP_GCP_BUCKET: 'zap-scan-results' # Only required if ZAP_GCP_PUBLISH is TRUE
-    secrets:
-      GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }} # Only required if ZAP_GCP_PUBLISH is TRUE
 ```
 
 [Back to top](#github-actions-templates)
@@ -133,44 +73,24 @@ on:
   push:
 jobs:
   trivy-scan:
-    uses: bcgov/pipeline-templates/.github/workflows/trivy-container.yaml@main
-    with:
-      IMAGE: gregnrobinson/bcgov-nginx-demo
-      TAG: latest
+    uses: button-inc/button-shared-gh-actions/.github/workflows/scan-code-trivy.yml@develop
 ```
 
 [Back to top](#github-actions-templates)
 
-### CodeQL Scan
+### SonarCloud Scan
 
 ```yaml
-name: codeql-scan
+name: sonarcloud-scan
 on:
   workflow_dispatch:
   push:
 jobs:
-  codeql-scan:
-    uses: bcgov/pipeline-templates/.github/workflows/codeql.yaml@main
-```
-
-[Back to top](#github-actions-templates)
-
-### Sonar Repo Scan
-
-```yaml
-name: sonar-repo-scan
-on:
-  workflow_dispatch:
-  push:
-jobs:
-  sonar-repo-scan:
-    uses: bcgov/pipeline-templates/.github/workflows/sonar-scanner.yaml@main
-    with:
-      ORG: ci-testing
-      PROJECT_KEY: bcgov-pipeline-templates
-      URL: https://sonarcloud.io
+  sonarcloud-scan:
+    uses: button-inc/button-shared-gh-actions/.github/workflows/scan-code-sonarcloud.yml@develop
     secrets:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN}}
 ```
 
 [Back to top](#github-actions-templates)
