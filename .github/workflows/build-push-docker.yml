@@ -3,19 +3,19 @@ name: Docker Build Push
 on:
   workflow_call:
     inputs:
-      IMAGE:
+      image:
         required: true
         type: string
-      IMAGE_REGISTRY:
+      image-registry:
         required: true
         type: string
-      WORKDIR:
+      workdir:
         required: true
         type: string
     secrets:
-      IMAGE_REGISTRY_USER:
+      image-registry-user:
         required: true
-      IMAGE_REGISTRY_PASSWORD:
+      image-registry-password:
         required: true
 jobs:
   build:
@@ -33,16 +33,16 @@ jobs:
     - name: Login to DockerHub
       uses: docker/login-action@v1
       with:
-        username: ${{ secrets.IMAGE_REGISTRY_USER }}
-        password: ${{ secrets.IMAGE_REGISTRY_PASSWORD }}
+        username: ${{ secrets.image-registry-user }}
+        password: ${{ secrets.image-registry-password }}
     - name: Build
-      working-directory: ${{ inputs.WORKDIR }}
+      working-directory: ${{ inputs.workdir }}
       run: >
         docker buildx build
         --platform=linux/amd64
-        -t ${{ inputs.IMAGE_REGISTRY }}/${{ inputs.IMAGE }}:${{ env.GITHUB_SHA_SHORT }}
+        -t ${{ inputs.image-registry }}/${{ inputs.image }}:${{ env.GITHUB_SHA_SHORT }}
         --output=type=image,push=true
-        ${GITHUB_WORKSPACE}/${{ inputs.WORKDIR }}
+        ${GITHUB_WORKSPACE}/${{ inputs.workdir }}
   push:
     name: Docker Push
     needs: build
@@ -59,14 +59,14 @@ jobs:
     - name: Login to DockerHub
       uses: docker/login-action@v1
       with:
-        username: ${{ secrets.IMAGE_REGISTRY_USER }}
-        password: ${{ secrets.IMAGE_REGISTRY_PASSWORD }}
+        username: ${{ secrets.image-registry-user }}
+        password: ${{ secrets.image-registry-password }}
     - name: Tag Push Latest
-      working-directory: ${{ inputs.WORKDIR }}
+      working-directory: ${{ inputs.workdir }}
       run: >
         docker buildx build
         --platform=linux/amd64
-        -t ${{ inputs.IMAGE }}:${{ env.GITHUB_SHA_SHORT }}
-        -t ${{ inputs.IMAGE }}:latest
+        -t ${{ inputs.image }}:${{ env.GITHUB_SHA_SHORT }}
+        -t ${{ inputs.image }}:latest
         --output=type=image,push=true
-        ${GITHUB_WORKSPACE}/${{ inputs.WORKDIR }}
+        ${GITHUB_WORKSPACE}/${{ inputs.workdir }}

@@ -54,12 +54,12 @@ jobs:
   build-push:
     uses: button-inc/button-shared-gh-actions/.github/workflows/build-push-docker.yml@develop
     with:
-      IMAGE_REGISTRY: docker.io
-      IMAGE: gregnrobinson/bcgov-nginx-demo
-      WORKDIR: ./demo/nginx
+      image-registry: docker.io
+      image: gregnrobinson/bcgov-nginx-demo
+      workdir: ./demo/nginx
     secrets:
-      IMAGE_REGISTRY_USER: ${{ secrets.IMAGE_REGISTRY_USER }}
-      IMAGE_REGISTRY_PASSWORD: ${{ secrets.IMAGE_REGISTRY_PASSWORD }}
+      image-registry-user: ${{ secrets.image-registry-user }}
+      image-registry-password: ${{ secrets.image-registry-password }}
 ```
 
 [Back to top](#github-actions-templates)
@@ -169,8 +169,8 @@ The following repository secrets are required depending on which template is bei
 
 | Secret Name             | Description |
 | :---------------------- | :------------|
-| IMAGE_REGISTRY_USER     | Registry username. Used for interacting with private image repositories.           |
-| IMAGE_REGISTRY_PASSWORD | Registry password. Used for interacting with private image repositories.       |
+| image-registry-user     | Registry username. Used for interacting with private image repositories.           |
+| image-registry-password | Registry password. Used for interacting with private image repositories.       |
 | OPENSHIFT_SERVER        | The API endpoint of your Openshfit cluster. By default, this needs to be a publically accessible endpoint.       |
 | OPENSHIFT_TOKEN         | A token that has the correct permissions to perform create deployment in OpenShift.       |
 | SONAR_TOKEN             | Used when using the Sonar scanning templates.
