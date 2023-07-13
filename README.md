@@ -114,6 +114,7 @@ jobs:
 [Back to top](#github-actions-templates)
 
 ### OWASP ZAP Scan
+It builds the app and allows ZAP scans against localhost.
 ```yaml
 name: zap-scan
 on:
