@@ -171,22 +171,16 @@ The following repository secrets are required depending on which template is bei
 | :---------------------- | :------------|
 | image-registry-user     | Registry username. Used for interacting with private image repositories.           |
 | image-registry-password | Registry password. Used for interacting with private image repositories.       |
-| OPENSHIFT_SERVER        | The API endpoint of your Openshfit cluster. By default, this needs to be a publically accessible endpoint.       |
-| OPENSHIFT_TOKEN         | A token that has the correct permissions to perform create deployment in OpenShift.       |
-| SONAR_TOKEN             | Used when using the Sonar scanning templates.
+| gitleaks-license        | If you are scanning repos that belong to a GitHub personal account, then no license key is required. If you are scanning repos that belong to a GitHub organization account, then you'll have to obtain a free license [here](https://gitleaks.io/products.html).       |
+| sonar_token             | Used when using the Sonar scanning templates.
 
-## Testing Framework
-
-Every Sunday, all worlflows are tested using a `workflow_call` to each workflow from the testing workflow.
-
-[View Pipeline Run](https://github.com/bcgov/pipeline-templates/actions/runs/1707326261)
-
-![image](https://user-images.githubusercontent.com/26353407/149749137-427a0384-cf79-4b2c-ac6d-c3c736db4714.png)
 
 ## Reference
 
 [Workflow Syntax](https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions)
 
 [Workflow Triggers](https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows)
+
+[Reusing workflows](https://docs.github.com/en/actions/using-workflows/reusing-workflows)
 
 [Back to top](#github-actions-templates)

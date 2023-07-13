@@ -10,7 +10,7 @@ on:
       github-token: 
         required: true
       gitleaks-license: 
-        required: true
+        required: false
 
 concurrency:
   group: callee-gitleaks-${{ github.workflow }}-${{ github.ref }}
