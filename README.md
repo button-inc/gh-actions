@@ -7,6 +7,7 @@ This project contains all Github Actions templates. To make use of the repositor
   - [Trivy Scan](#trivy-scan)
   - [SonarCloud Scan](#sonar-repo-scan)
   - [Husky Scan](#husky-scan)
+  - [Gitleaks Scan](#gitleaks-scan)
   - [Playwright Tests](#playwright-tests)
 - [Secrets Management](#secrets-management)
 - [Workflow Triggers](#workflow-triggers)
@@ -90,6 +91,23 @@ jobs:
     with:
       working-directory: ./app
       node-version: '18' 
+```
+
+[Back to top](#github-actions-templates)
+
+### Gitleaks Scan
+`gitleaks.toml` in the root dir allows you write your own secret detection rules, [here](https://github.com/gitleaks/gitleaks#configuration) for more information.
+```yaml
+name: gitleaks-scan
+on:
+  workflow_dispatch:
+  push:
+jobs:   
+  gitleaks-scan:
+    uses: button-inc/button-shared-gh-actions/.github/workflows/scan-code-gitleaks.yml@develop
+  secrets:
+    github-token: ${{ secrets.GITHUB_TOKEN }}
+    gitleaks-license: ${{ secrets.GITLEAKS_LICENSE}}
 ```
 
 [Back to top](#github-actions-templates)
