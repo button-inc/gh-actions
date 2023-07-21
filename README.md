@@ -190,6 +190,41 @@ The following repository secrets are required depending on which template is bei
 | gitleaks-license        | If you are scanning repos that belong to a GitHub personal account, then no license key is required. If you are scanning repos that belong to a GitHub organization account, then you'll have to obtain a free license [here](https://gitleaks.io/products.html).       |
 | sonar_token             | Used when using the Sonar scanning templates.
 
+## Specifying Action Versions and Branches
+
+In your workflows, you can specify not only the version of a reusable action, but also the branch from which to pull the action. This is done by appending `@<branch>` or `@<version>` to the end of the action reference in your workflow file.
+
+For instance, if you want to use the latest version of the playwright tests action from the `develop` branch, you would reference it like this:
+
+```yaml
+uses: button-inc/gh-actions/.github/workflows/test-code-playwright.yml@develop
+```
+This will always use the most recent version of the action from the `develop` branch. This can be useful when you want to test the latest changes that are not yet released. 
+
+However, there might be situations where you want to use a specific version of an action. In such cases, you can specify the version number instead of the branch:
+
+```yaml
+uses: button-inc/gh-actions/.github/workflows/test-code-playwright.yml@v0.0.1
+```
+This ensures that your workflow uses a specific, known version of the action, providing stability and predictability. It's particularly useful when you want to ensure that your workflow doesn't break due to changes in the latest version.
+
+## Keeping Your Actions Up-to-Date with Dependabot
+
+Dependabot is a tool provided by GitHub that can automatically check for new versions of dependencies, including reusable GitHub Actions. You can configure Dependabot to periodically check for new versions of the actions used in your workflows, and open a pull request to update the version whenever a new one is available.
+
+To set up Dependabot for your GitHub Actions, you'll need to add a new configuration file at `.github/dependabot.yml` in your repository. Here's an example configuration that checks for updates to GitHub Actions weekly:
+
+```yaml
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+```
+With this configuration, Dependabot will check for new versions of all GitHub Actions used in your repository every week. If a new version is found, Dependabot will open a pull request with the necessary changes to update to the new version.
+
+For more information on configuring Dependabot for GitHub Actions, see the [official documentation](https://docs.github.com/en/code-security/dependabot/working-with-dependabot/keeping-your-actions-up-to-date-with-dependabot).
 
 ## Reference
 
