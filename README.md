@@ -224,6 +224,10 @@ updates:
 ```
 With this configuration, Dependabot will check for new versions of all GitHub Actions used in your repository every week. If a new version is found, Dependabot will open a pull request with the necessary changes to update to the new version.
 
+Example of the pull request:
+![image](https://github.com/button-inc/gh-actions/assets/72329369/cf245f90-1dc5-4916-b83a-a76a358b8161)
+
+
 For more information on configuring Dependabot for GitHub Actions, see the [official documentation](https://docs.github.com/en/code-security/dependabot/working-with-dependabot/keeping-your-actions-up-to-date-with-dependabot).
 
 ## Reference
