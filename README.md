@@ -10,9 +10,10 @@ This project contains all Github Actions templates. To make use of the repositor
   - [Gitleaks Scan](#gitleaks-scan)
   - [OWASP ZAP Scan](#owasp-zap-scan)
   - [Playwright Tests](#playwright-tests)
-- [Secrets Management](#secrets-management)
 - [Workflow Triggers](#workflow-triggers)
-- [Testing Framework](#testing-framework)
+- [Secrets Management](#secrets-management)
+- [Specifying Action Versions and Branches](#specifying-action-versions-and-branches)
+- [Keeping Your Actions Up-to-Date with Dependabot](#keeping-your-actions-up-to-date-with-dependabot)
 - [Reference](#reference)
 
 ## How to Use
@@ -190,6 +191,7 @@ The following repository secrets are required depending on which template is bei
 | gitleaks-license        | If you are scanning repos that belong to a GitHub personal account, then no license key is required. If you are scanning repos that belong to a GitHub organization account, then you'll have to obtain a free license [here](https://gitleaks.io/products.html).       |
 | sonar_token             | Used when using the Sonar scanning templates.
 
+[Back to top](#github-actions-templates)
 ## Specifying Action Versions and Branches
 
 In your workflows, you can specify not only the version of a reusable action, but also the branch from which to pull the action. This is done by appending `@<branch>` or `@<version>` to the end of the action reference in your workflow file.
@@ -208,6 +210,7 @@ uses: button-inc/gh-actions/.github/workflows/test-code-playwright.yml@v0.0.1
 ```
 This ensures that your workflow uses a specific, known version of the action, providing stability and predictability. It's particularly useful when you want to ensure that your workflow doesn't break due to changes in the latest version.
 
+[Back to top](#github-actions-templates)
 ## Keeping Your Actions Up-to-Date with Dependabot
 
 Dependabot is a tool provided by GitHub that can automatically check for new versions of dependencies, including reusable GitHub Actions. You can configure Dependabot to periodically check for new versions of the actions used in your workflows, and open a pull request to update the version whenever a new one is available.
@@ -230,6 +233,7 @@ Example of the pull request:
 
 For more information on configuring Dependabot for GitHub Actions, see the [official documentation](https://docs.github.com/en/code-security/dependabot/working-with-dependabot/keeping-your-actions-up-to-date-with-dependabot).
 
+[Back to top](#github-actions-templates)
 ## Reference
 
 [Workflow Syntax](https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions)
@@ -237,5 +241,7 @@ For more information on configuring Dependabot for GitHub Actions, see the [offi
 [Workflow Triggers](https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows)
 
 [Reusing workflows](https://docs.github.com/en/actions/using-workflows/reusing-workflows)
+
+[Dependabot auto-update actions](https://docs.github.com/en/code-security/dependabot/working-with-dependabot/keeping-your-actions-up-to-date-with-dependabot)
 
 [Back to top](#github-actions-templates)
