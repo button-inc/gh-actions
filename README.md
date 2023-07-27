@@ -14,6 +14,7 @@ This project contains all Github Actions templates. To make use of the repositor
 - [Secrets Management](#secrets-management)
 - [Specifying Action Versions and Branches](#specifying-action-versions-and-branches)
 - [Keeping Your Actions Up-to-Date with Dependabot](#keeping-your-actions-up-to-date-with-dependabot)
+- [Specifying the Package Manager](#specifying-the-package-manager)
 - [Reference](#reference)
 
 ## How to Use
@@ -232,6 +233,26 @@ Example of the pull request:
 
 
 For more information on configuring Dependabot for GitHub Actions, see the [official documentation](https://docs.github.com/en/code-security/dependabot/working-with-dependabot/keeping-your-actions-up-to-date-with-dependabot).
+
+[Back to top](#github-actions-templates)
+## Specifying the Package Manager
+The `scan-code-owasp-zap.yml` and `test-code-playwright.yml` actions have an optional input named `package-manager`. This allows you to specify the package manager you'd like to use for the workflow. If no input is given, it defaults to `npm`. Currently, it supports `npm`, `yarn`, and `pnpm`.
+
+Here's an example of how you can specify `yarn` as the package manager for the `scan-code-owasp-zap.yml` action:
+```yaml
+name: zap-scan
+on:
+  workflow_dispatch:
+  push:
+jobs:   
+  zap-scan:
+    uses: button-inc/button-shared-gh-actions/.github/workflows/scan-code-owasp-zap.yml@develop
+    with:
+      package-manager: 'yarn'
+```
+In this example, the `scan-code-owasp-zap.yml` action will use yarn to manage packages instead of the default npm. This can be particularly useful if your project uses yarn and has a `yarn.lock` file.
+
+Remember to ensure that your project is correctly configured to use the specified package manager. For instance, if you specify yarn, your project should have a `yarn.lock` file.
 
 [Back to top](#github-actions-templates)
 ## Reference
