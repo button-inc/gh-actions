@@ -8,31 +8,30 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-    trivy-scan-code:
-        runs-on: ubuntu-latest
-        timeout-minutes: 60
-        steps:
-          - name: Checkout code
-            uses: actions/checkout@v3
-          - name: Cache Scan Dependencies
-            uses: actions/cache@v2
-            with:
-              path: ~/.cache/trivy
-              key: callee-trivy-${{ github.workflow }}-${{ github.run_id }}
-              restore-keys: trivy-
-          - name: Run Trivy vulnerability scanner in repo mode
-            uses: aquasecurity/trivy-action@master
-            with:
-              scan-type: fs
-              format: sarif
-              output: trivy-results.sarif
-              exit-code: "0"
-              ignore-unfixed: false
-              severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
-              timeout: 10m0s
-          - name: Upload Trivy scan results as artifact 
-            uses: actions/upload-artifact@v2
-            with:
-              name: trivy-results
-              path: trivy-results.sarif
-
+  trivy-scan-code:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Cache Scan Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/trivy
+          key: callee-trivy-${{ github.workflow }}-${{ github.run_id }}
+          restore-keys: trivy-
+      - name: Run Trivy vulnerability scanner in repo mode
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          format: sarif
+          output: trivy-results.sarif
+          exit-code: "0"
+          ignore-unfixed: false
+          severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+          timeout: 10m0s
+      - name: Upload Trivy scan results as artifact 
+        uses: actions/upload-artifact@v2
+        with:
+          name: trivy-results
+          path: trivy-results.sarif
