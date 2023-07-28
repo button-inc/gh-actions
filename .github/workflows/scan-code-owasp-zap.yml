@@ -60,8 +60,8 @@ jobs:
 
     - name: Build and start server
       run: |
-        npx ${ { inputs.package-manager } } run build
-        npx ${ { inputs.package-manager } } run start & # This starts the server in the background
+        npx ${{ inputs.package-manager }} run build
+        npx ${{ inputs.package-manager }} run start & # This starts the server in the background
         sleep 5 # This allows the server some time to start up
 
     - name: Run OWASP ZAP Full Scan
