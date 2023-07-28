@@ -6,10 +6,6 @@ on:
       configs-placeholder: 
         required: false
         type: string
-      package-manager:
-        required: false
-        default: 'npm'
-        type: string
 
 concurrency:
   group: callee-playwright-${{ github.workflow }}-${{ github.ref }}
@@ -27,44 +23,29 @@ jobs:
         with:
           node-version: 16
   
-      - name: Setup package manager and install dependencies
-        id: setup-deps
-        run: |
-          if [ "${{ inputs.package-manager }}" = "npm" ]; then
-            echo "::set-output name=cache-dir::$(npm config get cache)"
-            npm install
-          elif [ "${{ inputs.package-manager }}" = "yarn" ]; then
-            echo "::set-output name=cache-dir::$(yarn cache dir)"
-            npm install -g yarn
-            yarn install
-          elif [ "${{ inputs.package-manager }}" = "pnpm" ]; then
-            echo "::set-output name=cache-dir::$(npx -q pnpm config get store)"
-            npm install -g pnpm
-            pnpm install
-          else
-            echo "Unsupported package manager specified. Supported package managers are npm, yarn, and pnpm."
-            exit 1
-          fi
+      - name: Install pnpm
+        run: npm install -g pnpm
   
       - name: Cache dependencies
-        uses: actions/cache@v3
+        uses: actions/setup-node@v3
         with:
-          path: ${{ steps.setup-deps.outputs.cache-dir }}
-          key: ${{ runner.os }}-${{ inputs.package-manager }}-${{ hashFiles('**/lockfiles') }}  
-          restore-keys: |
-            ${{ runner.os }}-${{ inputs.package-manager }}-
+          node-version: 16
+          cache: 'pnpm'
+  
+      - name: Install dependencies
+        run: pnpm install
   
       - name: Install Playwright Browsers
-        run: npx ${{ inputs.package-manager }} exec playwright install --with-deps
+        run: pnpm exec playwright install --with-deps
   
       - name: Build and start server
         run: |
-          npx ${{ inputs.package-manager }} run build
-          npx ${{ inputs.package-manager }} run start & # This starts the server in the background
+          pnpm run build
+          pnpm run start & # This starts the server in the background
           sleep 5 # This allows the server some time to start up
   
       - name: Run Playwright tests
-        run: npx ${{ inputs.package-manager }} exec playwright test
+        run: pnpm exec playwright test
   
       - uses: actions/upload-artifact@v3
         if: always()
