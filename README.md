@@ -38,7 +38,7 @@ on:
   push:
 jobs:
   build-push:
-    uses: button-inc/button-shared-gh-actions/.github/workflows/build-push-docker.yml@develop
+    uses: button-inc/gh-actions/.github/workflows/build-push-docker.yml@develop
     with:
       image-registry: docker.io
       image: gregnrobinson/bcgov-nginx-demo
@@ -59,7 +59,7 @@ on:
   push:
 jobs:
   trivy-scan:
-    uses: button-inc/button-shared-gh-actions/.github/workflows/scan-code-trivy.yml@develop
+    uses: button-inc/gh-actions/.github/workflows/scan-code-trivy.yml@develop
 ```
 
 [Back to top](#github-actions-templates)
@@ -73,7 +73,7 @@ on:
   push:
 jobs:
   sonarcloud-scan:
-    uses: button-inc/button-shared-gh-actions/.github/workflows/scan-code-sonarcloud.yml@develop
+    uses: button-inc/gh-actions/.github/workflows/scan-code-sonarcloud.yml@develop
     secrets:
       github-token: ${{ secrets.GITHUB_TOKEN }}
       sonar-token: ${{ secrets.SONAR_TOKEN}}
@@ -90,7 +90,7 @@ on:
   push:
 jobs:   
   husky-scan:
-    uses: button-inc/button-shared-gh-actions/.github/workflows/scan-code-husky.yml@develop
+    uses: button-inc/gh-actions/.github/workflows/scan-code-husky.yml@develop
     with:
       working-directory: ./app
       node-version: '18' 
@@ -107,7 +107,7 @@ on:
   push:
 jobs:   
   gitleaks-scan:
-    uses: button-inc/button-shared-gh-actions/.github/workflows/scan-code-gitleaks.yml@develop
+    uses: button-inc/gh-actions/.github/workflows/scan-code-gitleaks.yml@develop
   secrets:
     github-token: ${{ secrets.GITHUB_TOKEN }}
     gitleaks-license: ${{ secrets.GITLEAKS_LICENSE}}
@@ -124,7 +124,7 @@ on:
   push:
 jobs:   
   zap-scan:
-    uses: button-inc/button-shared-gh-actions/.github/workflows/scan-code-owasp-zap.yml@develop
+    uses: button-inc/gh-actions/.github/workflows/scan-code-owasp-zap.yml@develop
     with:
       target-url: 'http://localhost:3000'
 ```
@@ -139,7 +139,7 @@ on:
   push:
 jobs:
   playwright-tests:
-    uses: button-inc/button-shared-gh-actions/.github/workflows/test-code-playwright.yml@develop
+    uses: button-inc/gh-actions/.github/workflows/test-code-playwright.yml@develop
 ```
 
 [Back to top](#github-actions-templates)
@@ -246,7 +246,7 @@ on:
   push:
 jobs:   
   zap-scan:
-    uses: button-inc/button-shared-gh-actions/.github/workflows/scan-code-owasp-zap.yml@develop
+    uses: button-inc/gh-actions/.github/workflows/scan-code-owasp-zap.yml@develop
     with:
       package-manager: 'yarn'
 ```
