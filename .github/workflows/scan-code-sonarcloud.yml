@@ -2,6 +2,10 @@ name: Sonarcloud Scan Code
 
 on:
   workflow_call:
+    inputs:
+      project-base-directory:
+        required: false
+        default: master
     secrets:
       github-token:
         required: true
